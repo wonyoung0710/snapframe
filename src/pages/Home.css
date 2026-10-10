@@ -1,4 +1,6 @@
 .home {
+  width: 100%;
+  box-sizing: border-box;
   max-width: 430px;
   margin: 0 auto;
   text-align: left;
