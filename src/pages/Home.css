@@ -1,0 +1,83 @@
+.home {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 24px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  background: #f3eee6;
+  color: #1c1b22;
+  text-align: left;
+}
+
+.home-logo {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-title, inherit);
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.home-title {
+  margin: 30px 0 11px;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 52px;
+}
+.home-desc {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.35;
+  color: #555;
+}
+
+/* 가운데 영역: 프레임 이미지가 아래 버튼 위로 살짝 겹쳐요 */
+.home-hero {
+  position: relative;
+  flex: 1;
+  min-height: 440px;
+}
+.home-frame {
+  position: absolute;
+  z-index: 2;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 490px;
+  width: auto;
+  pointer-events: none; /* 겹친 버튼도 눌리게 */
+}
+
+.home-buttons {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+}
+.home-btn {
+  flex: 1;
+  box-sizing: border-box;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 3px solid #1c1b22;
+  border-radius: 31px;
+  color: #1c1b22;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.home-btn-primary { flex: 1.5; background: #ffd900; }
+.home-btn-outline { background: transparent; }
+
+.home-note {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
