@@ -1,6 +1,16 @@
 /* 사진 선택 화면 */
-.select-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.select-title { font-size: 18px; }
+
+/* 헤더: 버튼과 제목이 줄바꿈되지 않고 한 줄로 */
+.select-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: nowrap; }
+.select-header .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  white-space: nowrap; flex-shrink: 0; padding-inline: 14px; font-size: 14px;
+}
+.select-title { flex: 1; text-align: center; white-space: nowrap; font-size: 16px; }
+
+/* 프레임 가운데 정렬 */
+.select-frame { display: flex; justify-content: center; margin: 16px 0; }
+
 .select-hint { margin: 16px 0 8px; font-size: 14px; }
 .select-sub { margin: 8px 0 16px; text-align: center; font-size: 14px; opacity: 0.7; }
 
@@ -19,11 +29,3 @@
 
 .select-next { width: 100%; margin-top: 16px; }
 .select-next:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.preview-overlay {
-  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
-  background: rgba(0, 0, 0, 0.7);
-}
-.preview-box { width: min(90vw, 480px); display: flex; flex-direction: column; gap: 12px; }
-.preview-box img { width: 100%; border-radius: 12px; transition: transform 0.2s; }
-.preview-actions { display: flex; gap: 8px; justify-content: center; }
