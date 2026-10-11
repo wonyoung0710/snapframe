@@ -1,6 +1,7 @@
 // [담당: 지은] 프레임 그리기 (템플릿 선택, 사진 선택, 결과 화면에서 공용).
-// [지은] 수정 (10/11): 목업의 프레임처럼 꾸밈 (회색 칸, 노란 그림자, 날짜 형식, 템플릿별 크기)
+// [지은] 수정 (10/11): 목업의 프레임처럼 꾸밈 (회색 칸, 노란 그림자, 템플릿별 크기)
 // [지은] 수정 (10/11): 프레임 색이 밝으면 글자·점선을 진한 색으로 (흰색·노랑을 골라도 보이게)
+// [지은] 수정 (10/11): 날짜를 date로 받을 수 있게 함 (안 주면 오늘). 글자·날짜 양끝 정렬은 선배 원래 코드로 되돌림
 //
 // props
 //   template   : TEMPLATES 중 하나
@@ -10,7 +11,7 @@
 //   width      : [지은] 추가: 프레임 가로 크기(px). 안 주면 템플릿에 맞는 기본 크기
 //   dashed     : [지은] 추가: true면 빈 칸을 점선으로 (사진 선택 화면용)
 //   shadow     : [지은] 추가: false면 노란 그림자 없음 (갤러리용)
-//   spread     : [지은] 추가: true면 글자와 날짜를 양끝으로 (결과 화면용)
+//   date       : [지은] 추가: '2026.10.06' 같은 글자. 안 주면 오늘 날짜 (완성된 사진은 완성한 날짜를 넘겨요)
 
 // [지은] 추가: 템플릿별 기본 가로 크기 (칸 크기 + 여백으로 계산한 값, 시안 보고 조정)
 const FRAME_WIDTH = { basic: 150, tall: 220, square: 240 }
@@ -24,6 +25,16 @@ function isLight(hex) {
   return (r * 299 + g * 587 + b * 114) / 1000 > 150
 }
 
+// [지은] 수정: 오늘 날짜를 2026.10.08 형식 글자로 (원래 컴포넌트 안에서 toLocaleDateString 사용)
+function todayText() {
+  const now = new Date()
+  return [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, '0'),
+    String(now.getDate()).padStart(2, '0'),
+  ].join('.')
+}
+
 export default function FrameView({
   template,
   photos = [],
@@ -32,20 +43,15 @@ export default function FrameView({
   width,
   dashed = false,
   shadow = true,
-  spread = false,
+  date,
 }) {
   const slotCount = template.slots
 
   // [지은] 추가: 프레임 색에 맞는 글자색 (밝은 프레임이면 진하게)
   const textColor = isLight(color) ? 'var(--color-ink)' : 'var(--color-paper)'
 
-  // [지은] 수정: 날짜를 2026.10.08 형식으로 (원래 toLocaleDateString 사용)
-  const now = new Date()
-  const date = [
-    now.getFullYear(),
-    String(now.getMonth() + 1).padStart(2, '0'),
-    String(now.getDate()).padStart(2, '0'),
-  ].join('.')
+  // [지은] 추가: 받은 날짜가 있으면 그걸, 없으면 오늘
+  const dateText = date ?? todayText()
 
   return (
     <div
@@ -98,8 +104,7 @@ export default function FrameView({
       <div
         style={{
           display: 'flex',
-          // [지은] 수정: 기본은 왼쪽으로 붙이고, spread일 때만 양끝 (원래 항상 양끝)
-          justifyContent: spread ? 'space-between' : 'flex-start',
+          justifyContent: 'space-between', // [지은] 원복: 선배 원래 코드 (SnapFrame 왼쪽, 날짜 오른쪽 끝)
           gap: 6,
           color: textColor, // [지은] 수정: 원래 항상 밝은 색
           fontSize: 11,
@@ -107,7 +112,7 @@ export default function FrameView({
         }}
       >
         <span>SnapFrame</span>
-        <span>{date}</span>
+        <span>{dateText}</span>
       </div>
     </div>
   )
