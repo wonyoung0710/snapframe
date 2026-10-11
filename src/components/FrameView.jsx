@@ -1,5 +1,6 @@
 // [담당: 지은] 프레임 그리기 (템플릿 선택, 사진 선택, 결과 화면에서 공용).
 // [지은] 수정 (10/11): 목업의 프레임처럼 꾸밈 (회색 칸, 노란 그림자, 날짜 형식, 템플릿별 크기)
+// [지은] 수정 (10/11): 프레임 색이 밝으면 글자·점선을 진한 색으로 (흰색·노랑을 골라도 보이게)
 //
 // props
 //   template   : TEMPLATES 중 하나
@@ -14,6 +15,15 @@
 // [지은] 추가: 템플릿별 기본 가로 크기 (칸 크기 + 여백으로 계산한 값, 시안 보고 조정)
 const FRAME_WIDTH = { basic: 150, tall: 220, square: 240 }
 
+// [지은] 추가: 색이 밝은지 판단 (사람 눈에 밝게 보이는 정도를 0~255로 계산)
+function isLight(hex) {
+  const n = parseInt(hex.slice(1), 16)
+  const r = n >> 16
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return (r * 299 + g * 587 + b * 114) / 1000 > 150
+}
+
 export default function FrameView({
   template,
   photos = [],
@@ -25,6 +35,9 @@ export default function FrameView({
   spread = false,
 }) {
   const slotCount = template.slots
+
+  // [지은] 추가: 프레임 색에 맞는 글자색 (밝은 프레임이면 진하게)
+  const textColor = isLight(color) ? 'var(--color-ink)' : 'var(--color-paper)'
 
   // [지은] 수정: 날짜를 2026.10.08 형식으로 (원래 toLocaleDateString 사용)
   const now = new Date()
@@ -59,8 +72,8 @@ export default function FrameView({
             onClick={() => onSlotClick?.(i)}
             style={{
               aspectRatio: template.slotRatio,
-              // [지은] 수정: 빈 칸은 회색, dashed일 때만 점선 (원래 항상 점선)
-              border: photos[i] || !dashed ? 'none' : '2px dashed var(--color-paper)',
+              // [지은] 수정: 빈 칸은 회색, dashed일 때만 점선 (원래 항상 점선). 점선 색은 textColor
+              border: photos[i] || !dashed ? 'none' : `2px dashed ${textColor}`,
               background: photos[i] || dashed ? 'transparent' : 'var(--color-muted)',
               padding: 0,
               overflow: 'hidden',
@@ -73,7 +86,10 @@ export default function FrameView({
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             ) : (
-              <span style={{ color: 'var(--color-paper)', fontSize: 18 }}>{i + 1}</span>
+              // [지은] 수정: 칸 번호 색. 회색 칸 위에서는 항상 밝게, 점선(투명) 칸에서는 프레임 색에 맞춤
+              <span style={{ color: dashed ? textColor : 'var(--color-paper)', fontSize: 18 }}>
+                {i + 1}
+              </span>
             )}
           </button>
         ))}
@@ -85,7 +101,7 @@ export default function FrameView({
           // [지은] 수정: 기본은 왼쪽으로 붙이고, spread일 때만 양끝 (원래 항상 양끝)
           justifyContent: spread ? 'space-between' : 'flex-start',
           gap: 6,
-          color: 'var(--color-paper)',
+          color: textColor, // [지은] 수정: 원래 항상 밝은 색
           fontSize: 11,
           paddingTop: 8,
         }}
