@@ -1,4 +1,5 @@
 // [담당: 지은] 5. 저장·내보내기
+// (막히면 원영에게: 이미지 다운로드, 공유 API)
 //   - 가운데 완성본, 아래 저장하기(다운로드) / 내보내기(공유) / 홈으로
 //   - 완성본은 utils/composeImage.js 로 (원영 담당)
 //   - 폰 갤러리 저장은 웹에서 직접 쓸 수 없어서 "다운로드" 또는 "공유창(navigator.share)"으로 대체
@@ -9,6 +10,15 @@ import FrameView from '../components/FrameView.jsx'
 import { composeImage } from '../utils/composeImage.js' // [지은] 완성본 만들기 (원영 구현 전에는 null 반환)
 import * as storage from '../utils/storage.js' // [지은] 비어 있어도 에러 안 나게 통째로 import
 import './Result.css'
+
+// [지은] 수정(10/12): 목업처럼 버튼 위에 들어갈 아이콘 (다운로드, 공유, 홈)
+const iconProps = {
+  width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+  strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true,
+}
+const IconDownload = () => (<svg {...iconProps}><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" /></svg>)
+const IconShare = () => (<svg {...iconProps}><path d="M12 15V4m0 0L8 8m4-4 4 4M6 12v7h12v-7" /></svg>)
+const IconHome = () => (<svg {...iconProps}><path d="M4 11l8-7 8 7v9H4z" /></svg>)
 
 // [지은] 오늘 날짜를 'YYYY.MM.DD'로 만들기 (composeImage에 넘길 날짜)
 const getToday = () => {
@@ -88,25 +98,39 @@ export default function Result() {
 
   return (
     <div className="screen result">
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link to="/select" className="btn">이전</Link>
-        <Link to="/" className="btn" onClick={resetAll}>나가기</Link>
+      {/* [지은] 수정(10/12): 목업처럼 이전 / 완성! / 나가기를 한 줄로 */}
+      <header className="result-header">
+        <Link to="/select" className="btn">‹ 이전</Link>
+        <h2 className="result-title">완성!</h2>
+        <Link to="/" className="btn" onClick={resetAll}>나가기 ✕</Link>
+      </header>
+
+      {/* [지은] 수정(10/12): 완성본/프레임을 가운데 정렬 (가로+세로) */}
+      <div className="result-stage">
+        {composed ? (
+          <img className="result-image" src={composed} alt="완성된 네 컷 사진" />
+        ) : (
+          <FrameView template={template} photos={slotPhotos} color={frameColor} />
+        )}
       </div>
-      <h2>완성!</h2>
 
-      {/* [지은] 합성 이미지가 있으면 그걸, 없으면 프레임 미리보기를 대신 표시 */}
-      {composed ? (
-        <img className="result-image" src={composed} alt="완성된 네 컷 사진" />
-      ) : (
-        <FrameView template={template} photos={slotPhotos} rotations={slots.map((idx) => (idx == null ? 0 : rotations[idx] ?? 0))} color={frameColor} />
-      )}
+      {/* [지은] 수정(10/12): 한 줄에 들어가게 문구를 줄임 */}
+      <p className="result-note">{message || '저장하면 사진 파일과 앱 갤러리에 함께 저장돼요'}</p>
 
-      <p className="result-note">{message || '저장하면 이미지 파일로 다운로드되고 앱 갤러리에도 저장돼요'}</p>
-
-      <div style={{ display: 'flex', gap: 10 }}>
-        <button className="btn btn-primary" style={{ flex: 1 }} onClick={handleSave}>저장하기</button>
-        <button className="btn" style={{ flex: 1 }} onClick={handleShare}>내보내기</button>
-        <Link to="/" className="btn" onClick={resetAll} style={{ flex: 1, textAlign: 'center', lineHeight: '48px' }}>홈으로</Link>
+      {/* [지은] 수정(10/12): 아이콘 + 글자를 세로로 쌓은 버튼 3개 (저장하기가 가장 넓음) */}
+      <div className="result-actions">
+        <button className="btn btn-primary result-save" onClick={handleSave}>
+          <IconDownload />
+          <span>저장하기</span>
+        </button>
+        <button className="btn result-share" onClick={handleShare}>
+          <IconShare />
+          <span>내보내기</span>
+        </button>
+        <Link to="/" className="btn result-home" onClick={resetAll}>
+          <IconHome />
+          <span>홈으로</span>
+        </Link>
       </div>
     </div>
   )
