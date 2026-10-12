@@ -38,16 +38,21 @@
 .home-hero {
   position: relative;
   flex: 1;
-  min-height: 440px;
+  /* [지은] 수정: 원래 440px. 화면이 낮으면 줄어들게 하고, 이보다 더 작아지면 스크롤 */
+  min-height: 220px;
 }
 .home-frame {
   position: absolute;
   z-index: 2;
-  top: -8px;
+  top: -9px;
   left: 50%;
   transform: translateX(-50%);
-  height: 490px;
+  /* [지은] 수정: 원래 height: 490px 고정. 가운데 영역 높이 + 25px (위로 9px, 아래로 16px 나가서 버튼과 16px 겹침) */
+  height: calc(100% + 25px);
+  max-height: 520px; /* [지은] 추가: 큰 화면에서 너무 커지지 않게 */
   width: auto;
+  max-width: 100%; /* [지은] 추가 */
+  object-fit: contain; /* [지은] 추가: 폭이 모자라도 그림이 찌그러지지 않게 */
   pointer-events: none; /* 겹친 버튼도 눌리게 */
 }
 
@@ -80,4 +85,11 @@
   text-align: center;
   font-size: 14px;
   color: #666;
+}
+
+/* [지은] 추가: 낮은 화면(iPhone SE 등)에서는 글자와 여백을 줄여서 한 화면에 들어오게 */
+@media (max-height: 740px) {
+  .home { padding-top: 16px; }
+  .home-title { margin: 20px 0 8px; font-size: 38px; line-height: 44px; }
+  .home-desc { font-size: 15px; }
 }
