@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
-/* 공통 색상/폰트: 모든 화면에서 var(--color-brand) 처럼 가져다 써요 */
+/* 공통 색상/폰트: 모든 화면에서 var(--color-brand) 처럼 가져다 쓰기 */
 :root {
   --color-brand: #FFD800;   /* 대표색 */
   --color-ink: #1B1A22;     /* 글자·테두리 */

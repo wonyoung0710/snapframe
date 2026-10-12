@@ -1,5 +1,4 @@
 // [담당: 지은] 5. 저장·내보내기
-// (막히면 원영에게: 이미지 다운로드, 공유 API)
 //   - 가운데 완성본, 아래 저장하기(다운로드) / 내보내기(공유) / 홈으로
 //   - 완성본은 utils/composeImage.js 로 (원영 담당)
 //   - 폰 갤러리 저장은 웹에서 직접 쓸 수 없어서 "다운로드" 또는 "공유창(navigator.share)"으로 대체
@@ -99,7 +98,7 @@ export default function Result() {
       {composed ? (
         <img className="result-image" src={composed} alt="완성된 네 컷 사진" />
       ) : (
-        <FrameView template={template} photos={slotPhotos} color={frameColor} />
+        <FrameView template={template} photos={slotPhotos} rotations={slots.map((idx) => (idx == null ? 0 : rotations[idx] ?? 0))} color={frameColor} />
       )}
 
       <p className="result-note">{message || '저장하면 이미지 파일로 다운로드되고 앱 갤러리에도 저장돼요'}</p>

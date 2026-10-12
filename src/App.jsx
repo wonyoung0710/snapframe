@@ -1,4 +1,4 @@
-// [담당: 원영] 화면 이동(라우터) 연결. 팀원은 수정하지 말고 필요하면 원영에게 요청해요.
+// [원영] 화면 이동(라우터) 연결
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import TemplateSelect from './pages/TemplateSelect.jsx'

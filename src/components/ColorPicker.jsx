@@ -8,7 +8,7 @@ export default function ColorPicker({ value, onChange }) {
   const current = FRAME_COLORS.find((c) => c.hex === value)
 
   return (
-    <div style={{ margin: '16px 0' }}>
+    <div style={{ margin: '10px 0' }}>
       {/* [지은] 추가: 제목(왼쪽) + 선택한 색 이름(오른쪽) */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
         <b style={{ fontSize: 16 }}>프레임 색상</b>

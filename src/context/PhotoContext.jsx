@@ -1,5 +1,5 @@
-// [원영] 화면이 바뀌어도 유지되는 공유 데이터.
-//   const { templateId, shots, addShot } = usePhoto()
+// [담당: 원영] 화면이 바뀌어도 유지되는 공유 데이터
+// 다른 파일에서 가져다쓰기 ->   const { templateId, shots, addShot } = usePhoto()
 import { createContext, useContext, useState } from 'react'
 import { TEMPLATES, TOTAL_SHOTS } from '../constants/templates.js'
 
@@ -25,14 +25,16 @@ export function PhotoProvider({ children }) {
     resetShots()
   }
 
-  // 촬영 후 다음 빈 컷에 사진 추가 (6장 다 찼으면 false)
+  // 촬영 후 다음 빈 컷에 사진 추가 (6장 다 찼으면 아무것도 안 함)
+  // setShots에 함수를 넘기면 "가장 최신 shots(prev)"를 받기
   const addShot = (url) => {
-    const at = shots.indexOf(null)
-    if (at === -1) return false
-    const next = shots.slice()
-    next[at] = url
-    setShots(next)
-    return true
+    setShots((prev) => {
+      const at = prev.indexOf(null)
+      if (at === -1) return prev
+      const next = prev.slice()
+      next[at] = url
+      return next
+    })
   }
 
   // 재촬영: 사진, 선택, 회전 전부 초기화

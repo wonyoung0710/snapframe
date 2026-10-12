@@ -11,7 +11,10 @@
 //   width      : [지은] 추가: 프레임 가로 크기(px). 안 주면 템플릿에 맞는 기본 크기
 //   dashed     : [지은] 추가: true면 빈 칸을 점선으로 (사진 선택 화면용)
 //   shadow     : [지은] 추가: false면 노란 그림자 없음 (갤러리용)
+//   rotations  : [원영] 추가: 칸마다 사진 회전 각도 (안 주면 0도)
 //   date       : [지은] 추가: '2026.10.06' 같은 글자. 안 주면 오늘 날짜 (완성된 사진은 완성한 날짜를 넘겨요)
+
+import RotatedImage from './RotatedImage.jsx' // [원영] 회전한 사진을 칸에 맞춰 그림
 
 // [지은] 추가: 템플릿별 기본 가로 크기 (칸 크기 + 여백으로 계산한 값, 시안 보고 조정)
 const FRAME_WIDTH = { basic: 150, tall: 220, square: 240 }
@@ -38,6 +41,7 @@ function todayText() {
 export default function FrameView({
   template,
   photos = [],
+  rotations = [], // [원영] 추가
   color = '#1B1A22',
   onSlotClick,
   width,
@@ -86,11 +90,7 @@ export default function FrameView({
             }}
           >
             {photos[i] ? (
-              <img
-                src={photos[i]}
-                alt={`${i + 1}번 칸`}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
+              <RotatedImage src={photos[i]} rotation={rotations[i] ?? 0} alt={`${i + 1}번 칸`} />
             ) : (
               // [지은] 수정: 칸 번호 색. 회색 칸 위에서는 항상 밝게, 점선(투명) 칸에서는 프레임 색에 맞춤
               <span style={{ color: dashed ? textColor : 'var(--color-paper)', fontSize: 18 }}>

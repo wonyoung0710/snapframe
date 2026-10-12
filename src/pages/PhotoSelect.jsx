@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { usePhoto } from '../context/PhotoContext.jsx'
 import FrameView from '../components/FrameView.jsx'
 import ColorPicker from '../components/ColorPicker.jsx'
+import RotatedImage from '../components/RotatedImage.jsx' // [원영] 회전 반영해서 그리기
 import PhotoPreviewModal from '../components/PhotoPreviewModal.jsx' // [지은] 확대 팝업 컴포넌트
 import './PhotoSelect.css' // [지은] 사진 선택 화면 스타일 추가
 
@@ -20,6 +21,7 @@ export default function PhotoSelect() {
 
   // 칸마다 들어갈 사진 주소 (slots는 shots의 번호를 가지고 있음)
   const slotPhotos = slots.map((idx) => (idx == null ? null : shots[idx]))
+  const slotRotations = slots.map((idx) => (idx == null ? 0 : rotations[idx] ?? 0)) // [원영] 칸별 회전 각도
 
   // [지은] 칸 수, 채운 칸 수, 다 찼는지, 이미 넣은 컷인지 계산
   const total = slots.length
@@ -75,7 +77,7 @@ export default function PhotoSelect() {
 
       {/* [지은] 수정: 프레임을 가운데 정렬하려고 div로 감쌈 */}
       <div className="select-frame">
-        <FrameView template={template} photos={slotPhotos} color={frameColor} onSlotClick={removeFromSlot} />
+        <FrameView template={template} photos={slotPhotos} rotations={slotRotations} color={frameColor} onSlotClick={removeFromSlot} />
       </div>
 
       {/* [지은] 클릭 방법 안내 문구 */}
@@ -93,7 +95,7 @@ export default function PhotoSelect() {
               onClick={() => handleShotClick(i)}
             >
               <span className="shot-badge">{i + 1}</span>
-              <img src={url} alt={`${i + 1}번째 컷`} draggable={false} />
+              <div className="shot-img"><RotatedImage src={url} rotation={rotations[i] ?? 0} alt={`${i + 1}번째 컷`} /></div>
             </button>
           ) : null
         )}
