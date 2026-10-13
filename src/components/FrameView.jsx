@@ -61,12 +61,10 @@ export default function FrameView({
     <div
       style={{
         background: color,
-        padding: '12px 12px 22px',
+        padding: '12px 12px 38px',
         borderRadius: 6,
         // [지은] 수정: 원래 width: 220 고정
         width: width ?? FRAME_WIDTH[template.id] ?? 220,
-        // [지은] 추가: 노란 그림자
-        boxShadow: shadow ? '8px 8px 0 var(--color-brand)' : 'none',
       }}
     >
       <div
