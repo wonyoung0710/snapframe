@@ -12,8 +12,8 @@ export default function Home() {
         네 컷을<br />바로 찍자
       </h2>
       <p className="home-desc">
-        브라우저에서 바로 찍고, 프레임에 담아 저장해요.<br />
-        셀카도 후면 카메라도 OK.
+        브라우저에서 바로 찍고 프레임에 담아 바로 저장<br />
+        셀카도 후면 카메라도 OK
       </p>
 
       <div className="home-hero">
