@@ -52,10 +52,10 @@ export default function FrameView({
     <div
       style={{
         background: color,
-        padding: '12px 12px 20px',
+        padding: '12px 12px 22px',
         borderRadius: 8,
-        // [지은] 추가: 잉크 테두리
-        border: '3px solid var(--color-ink)',
+        // [지은] 수정: border 대신 outline (크기에 영향을 안 줘서 저장 이미지와 같은 크기)
+        outline: '3px solid var(--color-ink)',
         width: width ?? FRAME_WIDTH[template.id] ?? 220,
         // [지은] 수정: 노란 그림자 + 그 바깥에 잉크 윤곽선(spread 3px)
         boxShadow: shadow
@@ -107,7 +107,7 @@ export default function FrameView({
           paddingTop: 8,
         }}
       >
-        <span style={{ fontFamily: 'var(--font-title)', letterSpacing: '0.04em' }}>SnapFrame</span>
+        <span>SnapFrame</span>
         {showDate && <span>{dateText}</span>}
       </div>
     </div>
